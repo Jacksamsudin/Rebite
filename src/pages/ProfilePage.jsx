@@ -12,6 +12,32 @@ function ProfilePage() {
     })
 
     const [formData, setFormData] = useState(profile)
+    const [errors, setErrors] = useState({})
+    function validateForm() {
+        const newErrors = {}
+
+        if (!formData.name.trim()) {
+            newErrors.name = 'Nama lengkap wajib diisi.'
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email wajib diisi.'
+        } else if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+        ) {
+            newErrors.email = 'Format email tidak valid'
+        }
+
+        if (!formData.phone.trim()) {
+            newErrors.phone = 'Nomor telepon wajib diisi.'
+        } else if (!/^\d+$/.test(formData.phone.trim())) {
+            newErrors.phone = 'Nomor telepon hanya boleh berisi angka.'
+        }
+        setErrors(newErrors)
+
+        return Object.keys(newErrors).length === 0
+
+    }
     return (
         <main className="profile-page">
             <h1>Profil Saya</h1>
@@ -35,7 +61,11 @@ function ProfilePage() {
                 <button
                     type='button'
                     className='profile-edit-button'
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => {
+                        setFormData(profile)
+                        setErrors({})
+                        setIsEditing(true)
+                    }}
                 >Edit Profil</button>
             </section>
             {isEditing && (
@@ -52,6 +82,9 @@ function ProfilePage() {
                                 setFormData({ ...formData, name: e.target.value })
                             }
                         />
+                        {errors.name && (
+                            <p className='profile-error'>{errors.name}</p>
+                        )}
                     </div>
 
                     <div className="profile-form-group">
@@ -64,6 +97,9 @@ function ProfilePage() {
                                 setFormData({ ...formData, email: e.target.value })
                             }
                         />
+                        {errors.email && (
+                            <p className='profile-error'>{errors.email}</p>
+                        )}
                     </div>
 
                     <div className="profile-form-group">
@@ -76,6 +112,10 @@ function ProfilePage() {
                                 setFormData({ ...formData, phone: e.target.value })
                             }
                         />
+                        {errors.phone && (
+                            <p className='profile-error'>{errors.phone}</p>
+                        )}
+
                     </div>
 
                     <div className="profile-form-actions">
@@ -92,8 +132,14 @@ function ProfilePage() {
                         <button
                             type="button"
                             onClick={() => {
-                                setProfile(formData)
-                                setIsEditing(false)
+                                if (validateForm()) {
+                                    setProfile({
+                                        name: formData.name.trim(),
+                                        email: formData.email.trim(),
+                                        phone: formData.phone.trim(),
+                                    })
+                                    setIsEditing(false)
+                                }
                             }}
                         >
                             Simpan
