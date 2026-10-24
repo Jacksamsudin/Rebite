@@ -109,3 +109,34 @@
   color: var(--color-primary);
   font-size: 14px;
 }
+
+@media (max-width: 480px) {
+  .login-page {
+    min-height: 100vh;
+    padding: 20px 16px;
+    align-items: center;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 24px 20px;
+  }
+
+  .login-title {
+    font-size: 24px;
+    line-height: 1.4;
+  }
+
+  .login-description {
+    margin-bottom: 20px;
+  }
+
+  .login-form {
+    gap: 16px;
+  }
+
+  .login-register {
+    margin-top: 12px;
+  }
+}
