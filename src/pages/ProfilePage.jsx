@@ -51,10 +51,22 @@ const translations = {
 function ProfilePage() {
     const [isEditing, setIsEditing] = useState(false)
 
-    const [profile, setProfile] = useState({
-        name: 'Dadang Kornelo',
-        email: 'dangkon@opsec.com',
-        phone: '08236767676'
+    const [profile, setProfile] = useState(() => {
+        const savedProfile = localStorage.getItem('rebite-profile')
+
+        if (savedProfile) {
+            try {
+                return JSON.parse(savedProfile)
+            } catch {
+                localStorage.removeItem('rebite-profile')
+            }
+        }
+
+        return {
+            name: 'Dadang Kornelo',
+            email: 'dangkon@opsec.com',
+            phone: '08236767676'
+        }
     })
 
     const [formData, setFormData] = useState(profile)
@@ -211,11 +223,16 @@ function ProfilePage() {
                             type="button"
                             onClick={() => {
                                 if (validateForm()) {
-                                    setProfile({
+                                    const updatedProfile = {
                                         name: formData.name.trim(),
                                         email: formData.email.trim(),
                                         phone: formData.phone.trim(),
-                                    })
+                                    }
+                                    setProfile(updatedProfile)
+                                    localStorage.setItem(
+                                        'rebite-profile',
+                                        JSON.stringify(updatedProfile)
+                                    )
                                     setIsEditing(false)
                                 }
                             }}
