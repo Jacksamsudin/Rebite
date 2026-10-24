@@ -1,11 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
-import { QRCodeSVG } from "qrcode.react";
 import "./OrderTicket.css";
 
 function OrderTicket() {
-  const location = useLocation();
-
-  const demoOrder = {
+  const order = {
     id: "RB-20261024-001",
     productName: "Paket Makanan Surplus",
     storeName: "Warung ReBite",
@@ -14,24 +10,6 @@ function OrderTicket() {
     pickupAddress: "Bojongsoang, Bandung",
     pickupTime: "16.00–19.00 WIB",
   };
-
-  const order = location.state?.order || demoOrder;
-
-  const orderId = order.id || order.orderId || demoOrder.id;
-  const productName =
-    order.productName || demoOrder.productName;
-  const storeName =
-    order.storeName || demoOrder.storeName;
-
-  const quantity = Number(
-    order.quantity ?? demoOrder.quantity
-  );
-
-  const total = Number(
-    order.total ?? demoOrder.total
-  );
-
-  const claimCode = `REBITE-CLAIM-${orderId}`;
 
   function formatRupiah(price) {
     return new Intl.NumberFormat("id-ID", {
@@ -67,7 +45,6 @@ function OrderTicket() {
           className="ticket-card"
           aria-label="Tiket pesanan"
         >
-
           <div className="ticket-header">
             <div>
               <span className="ticket-brand">
@@ -78,34 +55,32 @@ function OrderTicket() {
             </div>
 
             <span className="ticket-status">
-              Berhasil
+              Tiket Demo
             </span>
           </div>
 
           <div className="ticket-product">
             <div>
-              <h2>{productName}</h2>
-              <p>{storeName}</p>
-              <p>{quantity} porsi</p>
+              <h2>{order.productName}</h2>
+              <p>{order.storeName}</p>
+              <p>{order.quantity} porsi</p>
             </div>
 
             <strong>
-              {formatRupiah(total)}
+              {formatRupiah(order.total)}
             </strong>
           </div>
 
           <div className="ticket-qr">
-            <QRCodeSVG
-              value={claimCode}
-              size={190}
-              level="M"
-              marginSize={4}
-              title={`QR Code klaim pesanan ${orderId}`}
+            <img
+              src="/qr-demo.png"
+              alt={`QR Code klaim pesanan ${order.id}`}
+              width="190"
+              height="190"
             />
 
             <p>KODE KLAIM</p>
-
-            <h3>{orderId}</h3>
+            <h3>{order.id}</h3>
 
             <p className="ticket-qr-note">
               Simpan kode ini untuk proses pengambilan.
@@ -117,20 +92,12 @@ function OrderTicket() {
           <div className="ticket-info">
             <div>
               <span>Lokasi pengambilan</span>
-
-              <strong>
-                {order.pickupAddress ||
-                  demoOrder.pickupAddress}
-              </strong>
+              <strong>{order.pickupAddress}</strong>
             </div>
 
             <div>
               <span>Waktu pengambilan</span>
-
-              <strong>
-                {order.pickupTime ||
-                  demoOrder.pickupTime}
-              </strong>
+              <strong>{order.pickupTime}</strong>
             </div>
           </div>
         </section>
@@ -143,18 +110,11 @@ function OrderTicket() {
           >
             Cetak Tiket
           </button>
-
-          <Link
-            to="/"
-            className="ticket-home-button"
-          >
-            Kembali ke Beranda
-          </Link>
         </div>
 
         <p className="ticket-note">
-          Ini adalah tiket demo untuk pengujian aplikasi.
-          Tunjukkan tiket kepada penjual saat pengambilan.
+          Ini adalah tiket demo untuk pengujian
+          frontend ReBite.
         </p>
 
       </div>
