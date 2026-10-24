@@ -80,6 +80,9 @@ function ProfilePage() {
         return localStorage.getItem('rebite-language') || 'id'
     })
 
+    const [textSize, setTextSize] = useState('normal')
+    const [highContrast, setHighContrast] = useState(false)
+
     const t = translations[language]
     const handleAvatarChange = (event) => {
         const file = event.target.files[0]
@@ -91,7 +94,7 @@ function ProfilePage() {
             event.target.value = ''
             return
         }
-        if (file.size > 2 * 1024 * 1024){
+        if (file.size > 2 * 1024 * 1024) {
             alert('Ukuran foto maksimal 2MB.')
             event.target.value = ''
             return
@@ -133,7 +136,7 @@ function ProfilePage() {
     }
 
     return (
-        <main className="profile-page">
+        <main className={`profile-page text-size-${textSize}`}>
             <h1>{t.title}</h1>
             <p>{t.description}</p>
 
@@ -184,6 +187,26 @@ function ProfilePage() {
                         <option value="en">{t.english}</option>
                     </select>
 
+                </div>
+            </section>
+            <section className="profile-settings">
+                <h2>Accessibility</h2>
+
+                <div className="profile-setting-item">
+                    <div>
+                        <h3>Text Size</h3>
+                        <p>Adjust the text size for easier reading.</p>
+                    </div>
+
+                    <select
+                        value={textSize}
+                        onChange={(e) => setTextSize(e.target.value)}
+                        aria-label="Text Size"
+                    >
+                        <option value="normal">Normal</option>
+                        <option value="large">Large</option>
+                        <option value="extra-large">Extra Large</option>
+                    </select>
                 </div>
             </section>
             {isEditing && (
@@ -274,11 +297,11 @@ function ProfilePage() {
                                         JSON.stringify(updatedProfile)
                                     )
 
-                                    if(draftAvatar){
+                                    if (draftAvatar) {
                                         localStorage.setItem('rebite-avatar', draftAvatar)
                                         setAvatar(draftAvatar)
                                     }
-                                    
+
                                     setDraftAvatar(null)
                                     setIsEditing(false)
                                 }
