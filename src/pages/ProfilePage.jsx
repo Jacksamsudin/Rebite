@@ -23,7 +23,18 @@ const translations = {
         emailInvalid: 'Format email tidak valid.',
         phoneRequired: 'Nomor telepon wajib diisi.',
         phoneInvalid: 'Nomor telepon hanya boleh berisi angka.',
-        avatarAlt: 'Foto profil pengguna'
+        avatarAlt: 'Foto profil pengguna',
+        accessibility: 'Aksesibilitas',
+        textSize: 'Ukuran Teks',
+        textSizeDescription: 'Sesuaikan ukuran teks agar lebih mudah dibaca.',
+        normal: 'Normal',
+        large: 'Besar',
+        extraLarge: 'Ekstra Besar',
+        profilePhoto: 'Foto Profil',
+        imageHint: 'Format gambar, maksimal 2MB.',
+        invalidImage: 'Pilih gambar yang valid.',
+        imageTooLarge: 'Ukuran foto maksimal 2MB.',
+        imageReadError: 'Gagal membaca gambar. Coba pilih gambar lain.',
     },
     en: {
         title: 'My Profile',
@@ -45,7 +56,18 @@ const translations = {
         emailInvalid: 'Please enter a valid email address.',
         phoneRequired: 'Phone number is required.',
         phoneInvalid: 'Phone number must contain digits only.',
-        avatarAlt: 'User profile photo'
+        avatarAlt: 'User profile photo',
+        accessibility: 'Accessibility',
+        textSize: 'Text Size',
+        textSizeDescription: 'Adjust the text size for easier reading.',
+        normal: 'Normal',
+        large: 'Large',
+        extraLarge: 'Extra Large',
+        profilePhoto: 'Profile Photo',
+        imageHint: 'Image files only, maximum 2MB.',
+        invalidImage: 'Please select a valid image.',
+        imageTooLarge: 'Photo size must not exceed 2MB.',
+        imageReadError: 'Failed to read image. Please try another image.'
     }
 }
 function ProfilePage() {
@@ -85,18 +107,20 @@ function ProfilePage() {
     })
 
     const t = translations[language]
+
     const handleAvatarChange = (event) => {
         const file = event.target.files[0]
 
         if (!file) return
 
         if (!file.type.startsWith('image/')) {
-            alert('Pilih gambar yang valid.')
+            alert(t.invalidImage)
             event.target.value = ''
             return
         }
+
         if (file.size > 2 * 1024 * 1024) {
-            alert('Ukuran foto maksimal 2MB.')
+            alert(t.imageTooLarge)
             event.target.value = ''
             return
         }
@@ -104,11 +128,22 @@ function ProfilePage() {
         const reader = new FileReader()
 
         reader.onload = () => {
-            setDraftAvatar(reader.result)
+            if (typeof reader.result === 'string') {
+                setDraftAvatar(reader.result)
+            } else {
+                alert(t.imageReadError)
+                event.target.value = ''
+            }
+        }
+
+        reader.onerror = () => {
+            alert(t.imageReadError)
+            event.target.value = ''
         }
 
         reader.readAsDataURL(file)
     }
+
 
 
     function validateForm() {
@@ -191,12 +226,12 @@ function ProfilePage() {
                 </div>
             </section>
             <section className="profile-settings">
-                <h2>Accessibility</h2>
+                <h2>{t.accessibility}</h2>
 
                 <div className="profile-setting-item">
                     <div>
-                        <h3>Text Size</h3>
-                        <p>Adjust the text size for easier reading.</p>
+                        <h3>{t.textSize}</h3>
+                        <p>{t.textSizeDescription}.</p>
                     </div>
 
                     <select
@@ -208,9 +243,9 @@ function ProfilePage() {
                         }}
                         aria-label="Text Size"
                     >
-                        <option value="normal">Normal</option>
-                        <option value="large">Large</option>
-                        <option value="extra-large">Extra Large</option>
+                        <option value="normal">{t.normal}</option>
+                        <option value="large">{t.large}</option>
+                        <option value="extra-large">{t.extraLarge}</option>
                     </select>
                 </div>
             </section>
@@ -219,14 +254,14 @@ function ProfilePage() {
                     <h2>{t.editTitle}</h2>
 
                     <div className='profile-form-group'>
-                        <label htmlFor="profile-avatar">Foto Profil</label>
+                        <label htmlFor="profile-avatar">{t.profilePhoto}</label>
                         <input
                             id="profile-avatar"
                             type="file"
                             accept="image/*"
                             onChange={handleAvatarChange}
                         />
-                        <p className='profile-hint'>Format gambar, maksimal 2MB</p>
+                        <p className='profile-hint'>{t.imageHint}</p>
                     </div>
                     <div className="profile-form-group">
                         <label htmlFor="profile-name">{t.name}</label>
