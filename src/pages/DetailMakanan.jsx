@@ -1,4 +1,4 @@
-import '.Detailmakanan.css';
+import './DetailMakanan.css';
 
 function formatRupiah(harga) {
     return new Intl.NumberFormat('id-ID', {
@@ -8,7 +8,7 @@ function formatRupiah(harga) {
     }).format(harga);
 }
 
-function Detailmakanan({ makanan, onPesan, onKembali }) {
+function DetailMakanan({ makanan, onPesan, onKembali }) {
     if (!makanan) {
         return (
             <main className="detail-makanan">
