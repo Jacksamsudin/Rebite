@@ -97,3 +97,15 @@
   color: var(--color-primary);
   font-weight: 600;
 }
+
+.login-error {
+  margin: 0;
+  color: #B42318;
+  font-size: 14px;
+}
+
+.login-success {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 14px;
+}
