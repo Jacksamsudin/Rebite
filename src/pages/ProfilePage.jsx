@@ -70,12 +70,41 @@ function ProfilePage() {
     })
 
     const [formData, setFormData] = useState(profile)
+    const [avatar, setAvatar] = useState(() => {
+        return localStorage.getItem('rebite-avatar') || defaultAvatar
+    })
+    const [draftAvatar, setDraftAvatar] = useState(null)
+
     const [errors, setErrors] = useState({})
     const [language, setLanguage] = useState(() => {
         return localStorage.getItem('rebite-language') || 'id'
     })
-    const t = translations[language]
 
+    const t = translations[language]
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0]
+
+        if (!file) return
+
+        if (!file.type.startsWith('image/')) {
+            alert('Pilih gambar yang valid.')
+            event.target.value = ''
+            return
+        }
+        if (file.size > 2 * 1024 * 1024){
+            alert('Ukuran foto maksimal 2MB.')
+            event.target.value = ''
+            return
+        }
+
+        const reader = new FileReader()
+
+        reader.onload = () => {
+            setDraftAvatar(reader.result)
+        }
+
+        reader.readAsDataURL(file)
+    }
 
 
     function validateForm() {
@@ -111,11 +140,10 @@ function ProfilePage() {
             <section className='profile-card'>
                 <div className='profile-info'>
                     <img
-                        src={defaultAvatar}
+                        src={draftAvatar || avatar}
                         alt={t.avatarAlt}
                         className="profile-avatar"
                     />
-
                     <div className='profile-details'>
                         <h2>{profile.name}</h2>
                         <p>{profile.email}</p>
@@ -162,6 +190,16 @@ function ProfilePage() {
                 <section className="profile-edit-form">
                     <h2>{t.editTitle}</h2>
 
+                    <div className='profile-form-group'>
+                        <label htmlFor="profile-avatar">Foto Profil</label>
+                        <input
+                            id="profile-avatar"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                        />
+                        <p className='profile-hint'>Format gambar, maksimal 2MB</p>
+                    </div>
                     <div className="profile-form-group">
                         <label htmlFor="profile-name">{t.name}</label>
                         <input
@@ -213,6 +251,8 @@ function ProfilePage() {
                             type="button"
                             onClick={() => {
                                 setFormData(profile)
+                                setDraftAvatar(null)
+                                setErrors({})
                                 setIsEditing(false)
                             }}
                         >
@@ -233,6 +273,13 @@ function ProfilePage() {
                                         'rebite-profile',
                                         JSON.stringify(updatedProfile)
                                     )
+
+                                    if(draftAvatar){
+                                        localStorage.setItem('rebite-avatar', draftAvatar)
+                                        setAvatar(draftAvatar)
+                                    }
+                                    
+                                    setDraftAvatar(null)
                                     setIsEditing(false)
                                 }
                             }}
