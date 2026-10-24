@@ -80,8 +80,9 @@ function ProfilePage() {
         return localStorage.getItem('rebite-language') || 'id'
     })
 
-    const [textSize, setTextSize] = useState('normal')
-    const [highContrast, setHighContrast] = useState(false)
+    const [textSize, setTextSize] = useState(() => {
+        return localStorage.getItem('rebite-text-size') || 'normal'
+    })
 
     const t = translations[language]
     const handleAvatarChange = (event) => {
@@ -200,7 +201,11 @@ function ProfilePage() {
 
                     <select
                         value={textSize}
-                        onChange={(e) => setTextSize(e.target.value)}
+                        onChange={(e) => {
+                            const selectedSize = e.target.value
+                            setTextSize(selectedSize)
+                            localStorage.setItem('rebite-text-size', selectedSize)
+                        }}
                         aria-label="Text Size"
                     >
                         <option value="normal">Normal</option>
