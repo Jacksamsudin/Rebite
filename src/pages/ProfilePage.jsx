@@ -23,7 +23,7 @@ const translations = {
         emailInvalid: 'Format email tidak valid.',
         phoneRequired: 'Nomor telepon wajib diisi.',
         phoneInvalid: 'Nomor telepon hanya boleh berisi angka.',
-        avatarAlt:'Foto profil pengguna'
+        avatarAlt: 'Foto profil pengguna'
     },
     en: {
         title: 'My Profile',
@@ -45,7 +45,7 @@ const translations = {
         emailInvalid: 'Please enter a valid email address.',
         phoneRequired: 'Phone number is required.',
         phoneInvalid: 'Phone number must contain digits only.',
-        avatarAlt:'User profile photo'
+        avatarAlt: 'User profile photo'
     }
 }
 function ProfilePage() {
@@ -59,7 +59,9 @@ function ProfilePage() {
 
     const [formData, setFormData] = useState(profile)
     const [errors, setErrors] = useState({})
-    const [language, setLanguage] = useState('id')
+    const [language, setLanguage] = useState(() => {
+        return localStorage.getItem('rebite-language') || 'id'
+    })
     const t = translations[language]
 
 
@@ -131,7 +133,11 @@ function ProfilePage() {
 
                     <select
                         value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
+                        onChange={(e) => {
+                            const selectedLanguage = e.target.value
+                            setLanguage(selectedLanguage)
+                            localStorage.setItem('rebite-language', selectedLanguage)
+                        }}
                         aria-label={t.language}
                     >
                         <option value="id">{t.indonesian}</option>
