@@ -130,6 +130,48 @@
     color: #D32F2F;
     font-size: 12px;
 }
+
+.profile-settings {
+    margin-top: var(--space-6);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+}
+
+.profile-settings h2 {
+    margin-top: 0;
+    color: var(--color-primary);
+    font-size: 20px;
+}
+
+.profile-setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.profile-setting-item h3 {
+    margin: 0 0 var(--space-1);
+    font-size: 16px;
+}
+
+.profile-setting-item p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+.profile-setting-item select {
+    max-width: 100%;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
 @media (max-width: 600px) {
     .profile-card {
         align-items: flex-start;
@@ -149,5 +191,10 @@
 
     .profile-edit-button {
         width: 100%;
+    }
+
+    .profile-setting-item {
+        align-items: stretch;
+        flex-direction: column;
     }
 }

@@ -2,6 +2,52 @@ import defaultAvatar from '../assets/default-avatar.png'
 import './ProfilePage.css'
 import { useState } from 'react'
 
+const translations = {
+    id: {
+        title: 'Profil Saya',
+        description: 'Kelola informasi akun ReBite kamu.',
+        edit: 'Edit Profil',
+        settings: 'Pengaturan',
+        language: 'Bahasa',
+        languageDescription: 'Pilih bahasa yang ingin kamu gunakan.',
+        indonesian: 'Bahasa Indonesia',
+        english: 'English',
+        editTitle: 'Edit Informasi Profil',
+        name: 'Nama Lengkap',
+        email: 'Email',
+        phone: 'Nomor Telepon',
+        cancel: 'Batal',
+        save: 'Simpan',
+        nameRequired: 'Nama lengkap wajib diisi.',
+        emailRequired: 'Email wajib diisi.',
+        emailInvalid: 'Format email tidak valid.',
+        phoneRequired: 'Nomor telepon wajib diisi.',
+        phoneInvalid: 'Nomor telepon hanya boleh berisi angka.',
+        avatarAlt:'Foto profil pengguna'
+    },
+    en: {
+        title: 'My Profile',
+        description: 'Manage your ReBite account information.',
+        edit: 'Edit Profile',
+        settings: 'Settings',
+        language: 'Language',
+        languageDescription: 'Choose your preferred language.',
+        indonesian: 'Indonesian',
+        english: 'English',
+        editTitle: 'Edit Profile Information',
+        name: 'Full Name',
+        email: 'Email',
+        phone: 'Phone Number',
+        cancel: 'Cancel',
+        save: 'Save',
+        nameRequired: 'Full name is required.',
+        emailRequired: 'Email is required.',
+        emailInvalid: 'Please enter a valid email address.',
+        phoneRequired: 'Phone number is required.',
+        phoneInvalid: 'Phone number must contain digits only.',
+        avatarAlt:'User profile photo'
+    }
+}
 function ProfilePage() {
     const [isEditing, setIsEditing] = useState(false)
 
@@ -13,41 +59,46 @@ function ProfilePage() {
 
     const [formData, setFormData] = useState(profile)
     const [errors, setErrors] = useState({})
+    const [language, setLanguage] = useState('id')
+    const t = translations[language]
+
+
+
     function validateForm() {
         const newErrors = {}
 
         if (!formData.name.trim()) {
-            newErrors.name = 'Nama lengkap wajib diisi.'
+            newErrors.name = t.nameRequired
         }
 
         if (!formData.email.trim()) {
-            newErrors.email = 'Email wajib diisi.'
+            newErrors.email = t.emailRequired
         } else if (
             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
         ) {
-            newErrors.email = 'Format email tidak valid'
+            newErrors.email = t.emailInvalid
         }
 
         if (!formData.phone.trim()) {
-            newErrors.phone = 'Nomor telepon wajib diisi.'
+            newErrors.phone = t.phoneRequired
         } else if (!/^\d+$/.test(formData.phone.trim())) {
-            newErrors.phone = 'Nomor telepon hanya boleh berisi angka.'
+            newErrors.phone = t.phoneInvalid
         }
+
         setErrors(newErrors)
-
         return Object.keys(newErrors).length === 0
-
     }
+
     return (
         <main className="profile-page">
-            <h1>Profil Saya</h1>
-            <p>Kelola informasi akun ReBite kamu.</p>
+            <h1>{t.title}</h1>
+            <p>{t.description}</p>
 
             <section className='profile-card'>
                 <div className='profile-info'>
                     <img
                         src={defaultAvatar}
-                        alt="Foto profil Pengguna"
+                        alt={t.avatarAlt}
                         className="profile-avatar"
                     />
 
@@ -66,18 +117,39 @@ function ProfilePage() {
                         setErrors({})
                         setIsEditing(true)
                     }}
-                >Edit Profil</button>
+                >{t.edit}</button>
+            </section>
+
+            <section className='profile-settings'>
+                <h2>{t.settings}</h2>
+
+                <div className='profile-setting-item'>
+                    <div>
+                        <h3>{t.language}</h3>
+                        <p>{t.languageDescription}</p>
+                    </div>
+
+                    <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        aria-label={t.language}
+                    >
+                        <option value="id">{t.indonesian}</option>
+                        <option value="en">{t.english}</option>
+                    </select>
+
+                </div>
             </section>
             {isEditing && (
                 <section className="profile-edit-form">
-                    <h2>Edit Informasi Profil</h2>
+                    <h2>{t.editTitle}</h2>
 
                     <div className="profile-form-group">
-                        <label htmlFor="profile-name">Nama Lengkap</label>
+                        <label htmlFor="profile-name">{t.name}</label>
                         <input
                             id="profile-name"
                             type="text"
-                            defaultValue={formData.name}
+                            value={formData.name}
                             onChange={(e) =>
                                 setFormData({ ...formData, name: e.target.value })
                             }
@@ -88,11 +160,11 @@ function ProfilePage() {
                     </div>
 
                     <div className="profile-form-group">
-                        <label htmlFor="profile-email">Email</label>
+                        <label htmlFor="profile-email">{t.email}</label>
                         <input
                             id="profile-email"
                             type="email"
-                            defaultValue={formData.email}
+                            value={formData.email}
                             onChange={(e) =>
                                 setFormData({ ...formData, email: e.target.value })
                             }
@@ -103,11 +175,11 @@ function ProfilePage() {
                     </div>
 
                     <div className="profile-form-group">
-                        <label htmlFor="profile-phone">Nomor Telepon</label>
+                        <label htmlFor="profile-phone">{t.phone}</label>
                         <input
                             id="profile-phone"
                             type="tel"
-                            defaultValue={formData.phone}
+                            value={formData.phone}
                             onChange={(e) =>
                                 setFormData({ ...formData, phone: e.target.value })
                             }
@@ -126,7 +198,7 @@ function ProfilePage() {
                                 setIsEditing(false)
                             }}
                         >
-                            Batal
+                            {t.cancel}
                         </button>
 
                         <button
@@ -142,7 +214,7 @@ function ProfilePage() {
                                 }
                             }}
                         >
-                            Simpan
+                            {t.save}
                         </button>
                     </div>
                 </section>
