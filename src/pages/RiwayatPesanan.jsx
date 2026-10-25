@@ -1,5 +1,6 @@
 import React from 'react';
-import './RiwayatPesanan.css';
+import Navbar from '../components/navbar';
+import '../styles/RiwayatPesanan.css';  
 
 const RiwayatPesanan = () => {
   const pesananList = [
@@ -24,7 +25,10 @@ const RiwayatPesanan = () => {
   ];
 
   return (
+    <>
+    <Navbar />
     <div className="riwayat-container">
+       
       <h1 className="riwayat-title">Riwayat Pesanan</h1>
 
       <div className="riwayat-list">
@@ -59,6 +63,7 @@ const RiwayatPesanan = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

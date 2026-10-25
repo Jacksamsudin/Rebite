@@ -1,5 +1,6 @@
 import defaultAvatar from '../assets/default-avatar.png'
-import './ProfilePage.css'
+import '../styles/ProfilePage.css'
+import Navbar from '../components/navbar';
 import { useState } from 'react'
 
 const translations = {
@@ -172,6 +173,8 @@ function ProfilePage() {
     }
 
     return (
+        <>
+        <Navbar />
         <main className={`profile-page text-size-${textSize}`}>
             <h1>{t.title}</h1>
             <p>{t.description}</p>
@@ -353,6 +356,7 @@ function ProfilePage() {
                 </section>
             )}
         </main>
+        </>
     );
 }
 
