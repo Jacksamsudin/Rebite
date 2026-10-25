@@ -1,0 +1,51 @@
+
+[
+  {
+    "id": 1,
+    "nama": "Nasi Ayam",
+    "kategori": "Makanan Berat",
+    "hargaNormal": 25000,
+    "hargaDiskon": 15000,
+    "stok": 10,
+    "lokasi": "Bandung",
+    "deskripsi": "Nasi ayam lezat dengan harga hemat.",
+    "penjual": "ReBite Food",
+    "emoji": "🍗"
+  },
+  {
+    "id": 2,
+    "nama": "Roti dan Pastry",
+    "kategori": "Roti & Kue",
+    "hargaNormal": 20000,
+    "hargaDiskon": 10000,
+    "stok": 8,
+    "lokasi": "Bandung",
+    "deskripsi": "Aneka roti dan pastry pilihan.",
+    "penjual": "ReBite Bakery",
+    "emoji": "🥐"
+  },
+  {
+    "id": 3,
+    "nama": "Salad Buah",
+    "kategori": "Makanan Sehat",
+    "hargaNormal": 18000,
+    "hargaDiskon": 12000,
+    "stok": 5,
+    "lokasi": "Bandung",
+    "deskripsi": "Salad buah segar dan menyegarkan.",
+    "penjual": "ReBite Fresh",
+    "emoji": "🥗"
+  },
+  {
+    "id": 4,
+    "nama": "Paket Bento",
+    "kategori": "Makanan Berat",
+    "hargaNormal": 30000,
+    "hargaDiskon": 18000,
+    "stok": 6,
+    "lokasi": "Bandung",
+    "deskripsi": "Paket bento praktis dan mengenyangkan.",
+    "penjual": "ReBite Kitchen",
+    "emoji": "🍱"
+  }
+]

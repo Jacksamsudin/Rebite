@@ -1,46 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/navbar';
+import { getDaftarMakanan } from '../services/makananservice';
 import '../styles/HomePage.css';
 
-const daftarMakanan = [
-    {
-        id: 1,
-        nama: 'Nasi Ayam',
-        kategori: 'Makanan Berat',
-        hargaNormal: 25000,
-        harga: 15000,
-        lokasi: 'Bandung',
-        emoji: '🍗',
-    },
-    {
-        id: 2,
-        nama: 'Roti dan Pastry',
-        kategori: 'Roti & Kue',
-        hargaNormal: 20000,
-        harga: 10000,
-        lokasi: 'Bandung',
-        emoji: '🥐',
-    },
-    {
-        id: 3,
-        nama: 'Salad Buah',
-        kategori: 'Makanan Sehat',
-        hargaNormal: 18000,
-        harga: 12000,
-        lokasi: 'Bandung',
-        emoji: '🥗',
-    },
-    {
-        id: 4,
-        nama: 'Paket Bento',
-        kategori: 'Makanan Berat',
-        hargaNormal: 30000,
-        harga: 18000,
-        lokasi: 'Bandung',
-        emoji: '🍱',
-    },
-];
 
 const formatRupiah = (harga) =>
     new Intl.NumberFormat('id-ID', {
@@ -52,6 +15,30 @@ const formatRupiah = (harga) =>
 function HomePage() {
     const [kataKunci, setKataKunci] = useState('');
     const [kategoriAktif, setKategoriAktif] = useState('Semua');
+
+    const [daftarMakanan, setDaftarMakanan] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        async function ambilMakanan() {
+            try {
+                setLoading(true);
+                setError('');
+
+                const data = await getDaftarMakanan();
+                setDaftarMakanan(data);
+            } catch (err) {
+                setError(
+                    err.message || 'Gagal mengambil data makanan.'
+                );
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        ambilMakanan();
+    }, []);
 
     const kategori = [
         'Semua',
@@ -146,45 +133,57 @@ function HomePage() {
                     ))}
                 </div>
 
-                <div className="home-food-grid">
-                    {makananDitampilkan.map((makanan) => (
-                        <article className="home-food-card" key={makanan.id}>
-                            <div className="home-food-image">
-                                <span aria-hidden="true">{makanan.emoji}</span>
-                                <span className="home-discount">
-                                    Hemat {Math.round(
-                                        (1 - makanan.harga / makanan.hargaNormal) * 100
-                                    )}%
-                                </span>
-                            </div>
-
-                            <div className="home-food-info">
-                                <span className="home-food-category">
-                                    {makanan.kategori}
-                                </span>
-                                <h3>{makanan.nama}</h3>
-                                <p className="home-food-location">
-                                    {makanan.lokasi}
-                                </p>
-
-                                <div className="home-food-prices">
-                                    <strong>{formatRupiah(makanan.harga)}</strong>
-                                    <del>{formatRupiah(makanan.hargaNormal)}</del>
+                {loading ? (
+                    <p role="status">Memuat daftar makanan...</p>
+                ) : error ? (
+                    <div role="alert">
+                        <p>{error}</p>
+                        <button
+                            type="button"
+                            onClick={() => window.location.reload()}
+                        >
+                            Coba Lagi
+                        </button>
+                    </div>
+                ) : (
+                    <div className="home-food-grid">
+                        {makananDitampilkan.map((makanan) => (
+                            <article className="home-food-card" key={makanan.id}>
+                                <div className="home-food-image">
+                                    <span aria-hidden="true">{makanan.emoji}</span>
+                                    <span className="home-discount">
+                                        Hemat {Math.round(
+                                            (1 - makanan.hargaDiskon / makanan.hargaNormal) * 100
+                                        )}%
+                                    </span>
                                 </div>
 
+                                <div className="home-food-info">
+                                    <span className="home-food-category">
+                                        {makanan.kategori}
+                                    </span>
+                                    <h3>{makanan.nama}</h3>
+                                    <p className="home-food-location">
+                                        {makanan.lokasi}
+                                    </p>
 
-                                <Link
-                                    to={`/detail-makanan?id=${makanan.id}`}
-                                    state={{ makanan }}
-                                    className="home-detail-button"
-                                >
-                                    Lihat Detail
-                                </Link>
+                                    <div className="home-food-prices">
+                                        <strong>{formatRupiah(makanan.hargaDiskon)}</strong>
+                                        <del>{formatRupiah(makanan.hargaNormal)}</del>
+                                    </div>
 
-                            </div>
-                        </article>
-                    ))}
-                </div>
+                                    <Link
+                                        to={`/detail-makanan?id=${makanan.id}`}
+                                        state={{ makanan }}
+                                        className="home-detail-button"
+                                    >
+                                        Lihat Detail
+                                    </Link>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
 
                 {makananDitampilkan.length === 0 && (
                     <p className="home-empty">
