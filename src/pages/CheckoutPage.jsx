@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import '../styles/CheckoutPage.css'
+import './CheckoutPage.css'
 
 function CheckoutPage() {
   const [quantity, setQuantity] = useState(1)
