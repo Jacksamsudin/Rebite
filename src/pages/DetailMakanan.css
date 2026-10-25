@@ -6,16 +6,16 @@ width: min(100% - 32px, 1000px);
 
 .detail-back-button {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding: 10px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-button);
-  background: var(--color-surface);
-  color: var(--color-primary);
-  font-weight: 500;
-  transition: background 0.2s ease;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    font-weight: 500;
+    transition: background 0.2s ease;
 }
 
 .detail-back-button:hover {
