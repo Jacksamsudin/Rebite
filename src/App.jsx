@@ -1,16 +1,18 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/login';
-import CheckoutPage from './pages/CheckoutPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import DetailMakanan from './pages/Detailmakanan.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route
+          path="/"
+          element={<DetailMakanan />}
+        />
+        <Route
+          path="/detail-makanan"
+          element={<DetailMakanan />}
+        />
       </Routes>
     </BrowserRouter>
   );
