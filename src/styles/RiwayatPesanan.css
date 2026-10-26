@@ -1,0 +1,93 @@
+.riwayat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  background-color: var(--color-bg, #F7FAF7);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.riwayat-title {
+  color: var(--color-text, #242B26);
+  margin-bottom: 24px;
+}
+
+.riwayat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pesanan-card {
+  background-color: var(--color-card, #FFFFFF);
+  border: 1px solid var(--color-border, #D9E3DC);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.pesanan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, #D9E3DC);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.pesanan-id {
+  font-weight: 600;
+  color: var(--color-text, #242B26);
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-selesai {
+  background-color: #E6F4EA;
+  color: #176B45;
+}
+
+.status-dibatalkan {
+  background-color: #FCE8E6;
+  color: #C5221F;
+}
+
+.pesanan-tanggal {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.pesanan-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--color-text, #242B26);
+}
+
+.pesanan-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border, #D9E3DC);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.btn-detail {
+  background-color: var(--color-primary, #176B45);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-detail:hover {
+  opacity: 0.9;
+}

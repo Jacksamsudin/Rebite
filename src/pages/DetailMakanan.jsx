@@ -1,4 +1,6 @@
-import './DetailMakanan.css';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import Navbar from '../components/navbar';
+import '../styles/DetailMakanan.css';
 
 function formatRupiah(harga) {
     const nilai = Number(harga);
@@ -14,21 +16,29 @@ function formatRupiah(harga) {
     }).format(nilai);
 }
 
-function DetailMakanan({ makanan, onPesan, onKembali }) {
-    if (!makanan) {
-        return (
-            <main className="detail-makanan">
-                <p>Data makanan tidak ditemukan.</p>
-                <button
-                    type="button"
-                    className="detail-back-button"
-                    onClick={onKembali}
-                >
-                    Kembali ke Marketplace
-                </button>
-            </main>
-        );
-    }
+
+function DetailMakanan() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const idMakanan = searchParams.get('id');
+    const makananDariNavigasi = location.state?.makanan;
+
+    const makanan =
+        makananDariNavigasi &&
+        String(makananDariNavigasi.id) === idMakanan
+            ? makananDariNavigasi
+            : null;
+
+    const onKembali = () => navigate('/beranda');
+
+    const onPesan = (item) => {
+        navigate('/checkout', {
+            state: { makanan: item },
+        });
+    };
+
 
     const hargaNormal = Number(makanan.hargaNormal);
     const hargaDiskon = Number(makanan.hargaDiskon);
@@ -49,7 +59,10 @@ function DetailMakanan({ makanan, onPesan, onKembali }) {
     const stokTersedia = Number.isFinite(stok) && stok > 0;
 
     return (
+        <>
+        <Navbar />
         <main className="detail-makanan">
+            
             <button
                 type="button"
                 className="detail-back-button"
@@ -138,6 +151,7 @@ function DetailMakanan({ makanan, onPesan, onKembali }) {
                 </div>
             </section>
         </main>
+        </>
     );
 }
 
