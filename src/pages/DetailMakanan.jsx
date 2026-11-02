@@ -9,10 +9,10 @@ import rotiPastri from '../assets/Roti dan pastri.jpeg';
 import saladBuah from '../assets/Salad Buah.jpeg';
 
 const gambarMakanan = {
-  1: nasiAyam,
-  2: rotiPastri,
-  3: saladBuah,
-  4: paketBento,
+    1: nasiAyam,
+    2: rotiPastri,
+    3: saladBuah,
+    4: paketBento,
 };
 
 function formatRupiah(harga) {
@@ -28,7 +28,6 @@ function formatRupiah(harga) {
         maximumFractionDigits: 0,
     }).format(nilai);
 }
-
 
 function DetailMakanan() {
     const navigate = useNavigate();
@@ -134,19 +133,19 @@ function DetailMakanan() {
                 </button>
 
                 <section className="detail-card">
-               <div className="detail-image">
-  <img
-    src={gambarMakanan[makanan.id]}
-    alt={makanan.nama}
-    className="detail-food-image"
-  />
+                    <div className="detail-image">
+                        <img
+                            src={gambarMakanan[makanan.id]}
+                            alt={makanan.nama}
+                            className="detail-food-image"
+                        />
 
-  {diskon > 0 && (
-    <span className="detail-discount">
-      {diskon}% OFF
-    </span>
-  )}
-</div>
+                        {diskon > 0 && (
+                            <span className="detail-discount">
+                                {diskon}% OFF
+                            </span>
+                        )}
+                    </div>  
 
                     <div className="detail-content">
                         <p className="detail-category">
