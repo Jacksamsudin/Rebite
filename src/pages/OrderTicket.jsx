@@ -124,12 +124,6 @@ function OrderTicket() {
                         Lihat Riwayat Pesanan
                     </button>
                 </div>
-
-                <p className="ticket-note">
-                    Ini adalah tiket demo untuk pengujian
-                    frontend ReBite.
-                </p>
-
             </div>
         </main>
     );
