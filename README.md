@@ -1,16 +1,126 @@
-# React + Vite
+# ReBite – Marketplace Makanan Surplus
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**ReBite** merupakan aplikasi marketplace yang menghubungkan penjual makanan dengan konsumen untuk menjual makanan surplus atau makanan berlebih dengan harga lebih terjangkau.
 
-Currently, two official plugins are available:
+Aplikasi ini dibuat sebagai upaya mengurangi pemborosan makanan (*food waste*) sekaligus memberikan kesempatan kepada konsumen untuk mendapatkan makanan dengan harga hemat.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Fitur Aplikasi
 
-## React Compiler
+Berikut fitur utama yang tersedia pada aplikasi ReBite:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Login** – Halaman masuk untuk pengguna.
+2. **Beranda** – Menampilkan daftar makanan surplus yang tersedia.
+3. **Detail Makanan** – Menampilkan informasi produk, harga normal, harga diskon, stok, dan deskripsi makanan.
+4. **Checkout** – Memproses ringkasan pesanan, jumlah pembelian, dan metode pembayaran.
+5. **Order Ticket** – Menampilkan informasi tiket pesanan dan QR Code untuk simulasi pengambilan pesanan.
+6. **Profil** – Menampilkan dan mengelola informasi profil pengguna.
+7. **Riwayat Pesanan** – Menampilkan informasi pesanan pengguna.
 
-## Expanding the Oxlint configuration
+## Teknologi yang Digunakan
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- **React.js** – Library JavaScript untuk membangun antarmuka pengguna.
+- **Vite** – Build tool dan development server.
+- **React Router DOM** – Mengatur navigasi antarhalaman.
+- **JavaScript (ES6+)** – Bahasa pemrograman aplikasi.
+- **HTML5** – Membuat struktur halaman.
+- **CSS3** – Mengatur tampilan dan desain responsif.
+- **Fetch API** – Mengambil data makanan dari file JSON.
+
+## Sumber Data
+
+Aplikasi menggunakan data makanan berbentuk JSON yang disimpan pada:
+
+`public/makanan.json`
+
+Data tersebut berisi informasi seperti:
+
+- ID makanan
+- Nama makanan
+- Kategori
+- Harga normal
+- Harga diskon
+- Stok
+- Lokasi
+- Deskripsi
+- Nama penjual
+
+Data diambil menggunakan Fetch API melalui service yang tersedia pada:
+
+`src/services/makananService.js`
+
+## Struktur Folder
+
+```text
+ReBite/
+├── public/
+│   └── makanan.json
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── DetailMakanan.jsx
+│   │   ├── CheckoutPage.jsx
+│   │   ├── OrderTicket.jsx
+│   │   ├── ProfilePage.jsx
+│   │   └── RiwayatPesanan.jsx
+│   │
+│   ├── services/
+│   │   └── makananService.js
+│   │
+│   ├── styles/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+│
+├── index.html
+├── package.json
+└── README.md
+```
+
+## Cara Menjalankan Aplikasi
+
+Pastikan Node.js dan npm sudah terpasang pada komputer.
+
+**1. Clone repository**
+
+```bash
+git clone https://github.com/Jacksamsudin/Rebite.git
+```
+
+**2. Masuk ke folder proyek**
+
+```bash
+cd Rebite
+```
+
+**3. Install dependencies**
+
+```bash
+npm install
+```
+
+**4. Jalankan development server**
+
+```bash
+npm run dev
+```
+
+**5. Buka aplikasi**
+
+Buka alamat lokal yang muncul pada terminal, biasanya:
+
+`http://localhost:5173`
+
+## Tujuan Pengembangan
+
+Melalui ReBite, diharapkan makanan surplus yang masih layak konsumsi dapat dimanfaatkan kembali sehingga membantu mengurangi food waste.
+
+Selain itu, ReBite diharapkan dapat memberikan alternatif bagi konsumen untuk memperoleh makanan dengan harga yang lebih terjangkau.
+
+---
+
+**ReBite – Save Food, Save Money!**
