@@ -64,8 +64,8 @@ function CheckoutPage() {
     }
   }
 
-  function handlePayment(event) {
-    event.preventDefault()
+    function handlePayment(event) {
+      event.preventDefault()
 
     if (stok < 1) {
       setMessage('Maaf, stok makanan sudah habis.')
@@ -234,7 +234,6 @@ function CheckoutPage() {
               <span>Diskon promo</span>
               <span>-Rp{formatRupiah(discount)}</span>
             </div>
-          )}
 
           <div className="summary-total">
             <span>Total pembayaran</span>
@@ -249,19 +248,13 @@ function CheckoutPage() {
             Bayar Sekarang
           </button>
 
-          {message && (
-            <p className="checkout-message" role="status">
-              {message}
+            <p className="checkout-note">
+              Ini merupakan simulasi pembayaran untuk proyek ReBite.
             </p>
-          )}
+          </aside>
+        </form>
+      </main>
+    )
+  }
 
-          <p className="checkout-note">
-            Ini merupakan simulasi pembayaran untuk proyek ReBite.
-          </p>
-        </aside>
-      </form>
-    </main>
-  )
-}
-
-export default CheckoutPage
+  export default CheckoutPage
