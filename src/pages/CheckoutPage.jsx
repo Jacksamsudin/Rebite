@@ -1,29 +1,63 @@
 
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import './CheckoutPage.css'
 
+function formatRupiah(harga) {
+  return Number(harga || 0).toLocaleString('id-ID')
+}
+
 function CheckoutPage() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // Mengambil data makanan dari halaman Detail Makanan
+  const makanan = location.state?.makanan
+
   const [quantity, setQuantity] = useState(1)
   const [promoCode, setPromoCode] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('ewallet')
   const [message, setMessage] = useState('')
 
-  const product = {
-    name: 'Paket Roti Surplus',
-    store: 'ReBite Bakery',
-    price: 15000,
-    originalPrice: 30000,
+  // Jika Checkout dibuka tanpa memilih makanan
+  if (!makanan) {
+    return (
+      <main className="checkout-page">
+        <header className="checkout-heading">
+          <p className="checkout-eyebrow">REBITE FOOD RESCUE</p>
+          <h1>Checkout</h1>
+          <p>Data makanan tidak ditemukan.</p>
+        </header>
+
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => navigate('/beranda')}
+        >
+          Kembali ke Beranda
+        </button>
+      </main>
+    )
   }
 
+  const stok = Math.max(0, Math.floor(Number(makanan.stok) || 0))
+  const hargaNormal = Number(makanan.hargaNormal) || 0
+  const hargaDiskon = Number(makanan.hargaDiskon)
+
+  const harga =
+    Number.isFinite(hargaDiskon) && hargaDiskon >= 0
+      ? hargaDiskon
+      : hargaNormal
+
   const serviceFee = 1000
-  const subtotal = product.price * quantity
-  const discount = promoCode.trim().toUpperCase() === 'HEMAT10'
-    ? Math.round(subtotal * 0.1)
-    : 0
+  const subtotal = harga * quantity
+
+  const promoValid = promoCode.trim().toUpperCase() === 'HEMAT10'
+  const discount = promoValid ? Math.round(subtotal * 0.1) : 0
   const total = subtotal + serviceFee - discount
 
   function handlePromo() {
-    if (promoCode.trim().toUpperCase() === 'HEMAT10') {
+    if (promoValid) {
       setMessage('Kode promo berhasil digunakan!')
     } else {
       setMessage('Kode promo tidak valid.')
@@ -33,16 +67,27 @@ function CheckoutPage() {
   function handlePayment(event) {
     event.preventDefault()
 
-    if (quantity < 1) {
-      setMessage('Jumlah pesanan minimal 1.')
+    if (stok < 1) {
+      setMessage('Maaf, stok makanan sudah habis.')
       return
     }
 
-    setMessage(
-      `Simulasi pembayaran sebesar Rp${total.toLocaleString('id-ID')} menggunakan ${
-        paymentMethod === 'ewallet' ? 'E-Wallet' : 'Kartu'
-      }.`
-    )
+    if (quantity < 1 || quantity > stok) {
+      setMessage(`Jumlah pesanan maksimal ${stok} paket.`)
+      return
+    }
+
+    navigate('/order-ticket', {
+      state: {
+        makanan,
+        quantity,
+        subtotal,
+        serviceFee,
+        discount,
+        total,
+        paymentMethod,
+      },
+    })
   }
 
   return (
@@ -58,28 +103,44 @@ function CheckoutPage() {
           <h2>Ringkasan Pesanan</h2>
 
           <article className="checkout-product">
-            <div className="checkout-product-image" aria-hidden="true">
-              🥐
+            <div className="checkout-product-image">
+              {makanan.foto ? (
+                <img
+                  src={makanan.foto}
+                  alt={makanan.nama || 'Foto makanan'}
+                />
+              ) : (
+                '🥐'
+              )}
             </div>
 
             <div className="checkout-product-info">
-              <h3>{product.name}</h3>
-              <p>{product.store}</p>
-              <del>
-                Rp{product.originalPrice.toLocaleString('id-ID')}
-              </del>
-              <strong>
-                Rp{product.price.toLocaleString('id-ID')}
-              </strong>
+              <h3>{makanan.nama || 'Nama makanan'}</h3>
+              <p>{makanan.penjual || 'Penjual ReBite'}</p>
+
+              {hargaNormal > harga && (
+                <del>Rp{formatRupiah(hargaNormal)}</del>
+              )}
+
+              <strong>Rp{formatRupiah(harga)}</strong>
             </div>
           </article>
 
+          <p className="checkout-stock">
+            Stok tersedia: <strong>{stok}</strong>
+          </p>
+
           <div className="checkout-quantity">
             <label htmlFor="quantity">Jumlah paket</label>
+
             <div className="quantity-controls">
               <button
                 type="button"
-                onClick={() => setQuantity((current) => Math.max(1, current - 1))}
+                onClick={() => {
+                  setQuantity((current) => Math.max(1, current - 1))
+                  setMessage('')
+                }}
+                disabled={quantity <= 1}
                 aria-label="Kurangi jumlah"
               >
                 −
@@ -89,7 +150,11 @@ function CheckoutPage() {
 
               <button
                 type="button"
-                onClick={() => setQuantity((current) => current + 1)}
+                onClick={() => {
+                  setQuantity((current) => Math.min(stok, current + 1))
+                  setMessage('')
+                }}
+                disabled={quantity >= stok || stok < 1}
                 aria-label="Tambah jumlah"
               >
                 +
@@ -99,6 +164,7 @@ function CheckoutPage() {
 
           <div className="checkout-promo">
             <label htmlFor="promo">Kode promo</label>
+
             <div className="promo-controls">
               <input
                 id="promo"
@@ -111,7 +177,11 @@ function CheckoutPage() {
                 }}
               />
 
-              <button type="button" className="button-secondary" onClick={handlePromo}>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={handlePromo}
+              >
                 Gunakan
               </button>
             </div>
@@ -151,27 +221,31 @@ function CheckoutPage() {
 
           <div className="summary-row">
             <span>Subtotal</span>
-            <span>Rp{subtotal.toLocaleString('id-ID')}</span>
+            <span>Rp{formatRupiah(subtotal)}</span>
           </div>
 
           <div className="summary-row">
             <span>Biaya layanan</span>
-            <span>Rp{serviceFee.toLocaleString('id-ID')}</span>
+            <span>Rp{formatRupiah(serviceFee)}</span>
           </div>
 
           {discount > 0 && (
             <div className="summary-row discount-row">
               <span>Diskon promo</span>
-              <span>-Rp{discount.toLocaleString('id-ID')}</span>
+              <span>-Rp{formatRupiah(discount)}</span>
             </div>
           )}
 
           <div className="summary-total">
             <span>Total pembayaran</span>
-            <strong>Rp{total.toLocaleString('id-ID')}</strong>
+            <strong>Rp{formatRupiah(total)}</strong>
           </div>
 
-          <button type="submit" className="button-primary">
+          <button
+            type="submit"
+            className="button-primary"
+            disabled={stok < 1}
+          >
             Bayar Sekarang
           </button>
 
