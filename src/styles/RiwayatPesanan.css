@@ -190,6 +190,16 @@
   font-size: 0.95rem;
 }
 
+.modal-item-row.fee-text {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.modal-item-row.discount-text {
+  color: #C5221F;
+  font-size: 0.9rem;
+}
+
 .modal-total-row {
   display: flex;
   justify-content: space-between;
