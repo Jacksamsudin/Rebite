@@ -1,4 +1,4 @@
-import "./OrderTicket.css";
+import "../styles/OrderTicket.css";
 import qrDemo from "../assets/qr-demo.png";
 
 function OrderTicket() {

@@ -1,8 +1,10 @@
-  import { useState } from 'react';
-  import './Login.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/Login.css';
 
   function Login() {
 
+    const navigate = useNavigate();
     const [pesanError, setPesanError] = useState('');
     const [pesanSukses, setPesanSukses] = useState('');
 
@@ -21,7 +23,7 @@
         return;
       }
 
-      setPesanSukses('Validasi berhasil. Login belum terhubung ke server');
+      navigate('/beranda');
     }
     return (
       <main className="login-page">
