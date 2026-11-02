@@ -228,3 +228,9 @@ width: min(100% - 32px, 1000px);
     height: 220px;
   }
 }
+.detail-food-image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  border-radius: 16px;
+}
