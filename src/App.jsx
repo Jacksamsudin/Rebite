@@ -1,6 +1,4 @@
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
 import Login from './pages/Login';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderTicket from './pages/OrderTicket';
