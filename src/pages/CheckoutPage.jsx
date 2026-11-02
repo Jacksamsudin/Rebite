@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import '../styles/CheckoutPage.css'
@@ -11,7 +10,6 @@ function CheckoutPage() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  // Mengambil data makanan dari halaman Detail Makanan
   const makanan = location.state?.makanan
 
   const [quantity, setQuantity] = useState(1)
@@ -19,7 +17,6 @@ function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState('ewallet')
   const [message, setMessage] = useState('')
 
-  // Jika Checkout dibuka tanpa memilih makanan
   if (!makanan) {
     return (
       <main className="checkout-page">
@@ -77,8 +74,33 @@ function CheckoutPage() {
       return
     }
 
+    const newOrder = {
+      id: `RB-${Date.now().toString().slice(-6)}`,
+      tanggal: new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      status: 'Menunggu Pengambilan',
+      items: [
+        {
+          nama: makanan.nama || 'Paket Surplus',
+          porsi: quantity,
+          harga: subtotal,
+        },
+      ],
+      total: total,
+      storeName: makanan.penjual || 'Warung ReBite',
+      pickupAddress: 'Bojongsoang, Bandung',
+      pickupTime: '16.00–19.00 WIB',
+    }
+
+    const existingOrders = JSON.parse(localStorage.getItem('rebite_orders') || '[]')
+    localStorage.setItem('rebite_orders', JSON.stringify([newOrder, ...existingOrders]))
+
     navigate('/order-ticket', {
       state: {
+        order: newOrder,
         makanan,
         quantity,
         subtotal,

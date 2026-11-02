@@ -1,8 +1,12 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/OrderTicket.css";
 import qrDemo from "../assets/qr-demo.png";
 
 function OrderTicket() {
-    const order = {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const order = location.state?.order || {
         id: "RB-20261024-001",
         productName: "Paket Makanan Surplus",
         storeName: "Warung ReBite",
@@ -62,9 +66,9 @@ function OrderTicket() {
 
                     <div className="ticket-product">
                         <div>
-                            <h2>{order.productName}</h2>
+                            <h2>{order.items ? order.items[0].nama : order.productName}</h2>
                             <p>{order.storeName}</p>
-                            <p>{order.quantity} porsi</p>
+                            <p>{order.items ? order.items[0].porsi : order.quantity} porsi</p>
                         </div>
 
                         <strong>
@@ -103,13 +107,21 @@ function OrderTicket() {
                     </div>
                 </section>
 
-                <div className="ticket-actions">
+                <div className="ticket-actions" style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                     <button
                         type="button"
                         className="ticket-print-button"
                         onClick={() => window.print()}
                     >
                         Cetak Tiket
+                    </button>
+                    <button
+                        type="button"
+                        className="ticket-print-button"
+                        style={{ backgroundColor: '#176B45' }}
+                        onClick={() => navigate('/riwayat-pesanan')}
+                    >
+                        Lihat Riwayat Pesanan
                     </button>
                 </div>
 
