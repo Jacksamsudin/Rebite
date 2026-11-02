@@ -3,6 +3,17 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getMakananById } from '../services/makananservice';
 import Navbar from '../components/navbar';
 import '../styles/DetailMakanan.css';
+import nasiAyam from '../assets/nasi-ayam.jpeg';
+import paketBento from '../assets/Paket bento.jpeg';
+import rotiPastri from '../assets/Roti dan pastri.jpeg';
+import saladBuah from '../assets/Salad Buah.jpeg';
+
+const gambarMakanan = {
+  1: nasiAyam,
+  2: rotiPastri,
+  3: saladBuah,
+  4: paketBento,
+};
 
 function formatRupiah(harga) {
     const nilai = Number(harga);
@@ -123,22 +134,19 @@ function DetailMakanan() {
                 </button>
 
                 <section className="detail-card">
-                    <div className="detail-image">
-                        {makanan.foto ? (
-                            <img
-                                src={makanan.foto}
-                                alt={makanan.nama || 'Foto makanan'}
-                            />
-                        ) : (
-                            <p>Foto makanan belum tersedia.</p>
-                        )}
+               <div className="detail-image">
+  <img
+    src={gambarMakanan[makanan.id]}
+    alt={makanan.nama}
+    className="detail-food-image"
+  />
 
-                        {diskon > 0 && (
-                            <span className="detail-discount">
-                                {diskon}% OFF
-                            </span>
-                        )}
-                    </div>
+  {diskon > 0 && (
+    <span className="detail-discount">
+      {diskon}% OFF
+    </span>
+  )}
+</div>
 
                     <div className="detail-content">
                         <p className="detail-category">
