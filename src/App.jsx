@@ -1,13 +1,11 @@
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
 import Login from './pages/Login';
 import CheckoutPage from './pages/CheckoutPage';
-import DetailMakanan from './pages/DetailMakanan';
 import OrderTicket from './pages/OrderTicket';
 import ProfilePage from './pages/ProfilePage';
 import RiwayatPesanan from './pages/RiwayatPesanan';
 import HomePage from './pages/HomePage';
+import DetailMakanan from './pages/DetailMakanan';
 
 function App() {
   return (
