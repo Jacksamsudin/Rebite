@@ -3,7 +3,17 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { getDaftarMakanan } from '../services/makananservice';
 import '../styles/HomePage.css';
+import paketBento from '../assets/Paket bento.jpeg';
+import rotiPastri from '../assets/Roti dan pastri.jpeg';
+import saladBuah from '../assets/Salad Buah.jpeg';
+import nasiAyam from '../assets/nasi-ayam.jpeg';
 
+const gambarMakanan = {
+    'Paket Bento': paketBento,
+    'Roti dan Pastry': rotiPastri,
+    'Salad Buah': saladBuah,
+    'Nasi Ayam': nasiAyam,
+};
 
 const formatRupiah = (harga) =>
     new Intl.NumberFormat('id-ID', {
@@ -150,7 +160,10 @@ function HomePage() {
                         {makananDitampilkan.map((makanan) => (
                             <article className="home-food-card" key={makanan.id}>
                                 <div className="home-food-image">
-                                    <span aria-hidden="true">{makanan.emoji}</span>
+                                    <img
+                                        src={gambarMakanan[makanan.nama]}
+                                        alt={makanan.nama}
+                                    />
                                     <span className="home-discount">
                                         Hemat {Math.round(
                                             (1 - makanan.hargaDiskon / makanan.hargaNormal) * 100
